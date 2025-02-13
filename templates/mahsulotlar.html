@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title%} Nasiyalar {% endblock %}
+{% block branch %} Nasiyalar {% endblock %}
+{% block product_active %} active {% endblock%}
+{% block content%}
+
+    <!-- /.content-header -->
+    <div class="col-md-12">
+        <div class="card card-dark">
+            <div class="card-header border-0">
+
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Nasiya
+                        qo'shish
+                    </button>
+                    <input type="text" id="search-customer" class="form-control ml-3" style="max-width: 300px;"
+                           placeholder="Mijoz ismini qidirish..." onkeyup="filterCustomers()">
+                </div>
+                <script>
+                    function filterCustomers() {
+                        const input = document.getElementById('search-customer');
+                        const filter = input.value.toLowerCase();
+                        const rows = document.querySelectorAll('tbody tr');
+
+                        rows.forEach(row => {
+                            const customerCell = row.querySelector('td:nth-child(2)');
+                            if (customerCell && customerCell.textContent.toLowerCase().includes(filter)) {
+                                row.style.display = '';
+                            } else {
+                                row.style.display = 'none';
+                            }
+                        });
+                    }
+                </script>
+
+                <div class="mt-3 mb-3">
+                    <h5>Jami nasiya: <strong>{{ total_debt }} </strong></h5>
+                </div>
+                
+            </div>
+            <div class="card-body">
+                <table class="table" style="text-align: center;">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 15px">T/r</th>
+                            <th scope="col" style="width: 255px; text-align: center;">Mijoz</th>
+                            <th scope="col" style="text-align: center;">Nasiya miqdori</th>
+                            <th scope="col" style="text-align: center;">Mijoz tug'ulgan sana</th>
+                            <th scope="col" style="text-align: center;">Savdo sanasi</th>
+                            <th scope="col" style="text-align: center;">Mahsulotlar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {%for debt in debts%}
+                        <tr>
+                            <th scope="row">{{forloop.counter}}</th>
+                            <td>{{ debt.customer }}</td>
+                            <td>{{ debt.debt }} So'm</td>
+                            <td>{{ debt.customer_birth_date }}</td>
+                            <td>{{ debt.date }}</td>
+                            <td>{{ debt.products }}</td>
+
+                            <td><a href="{{debt.id}}/update"><button type="submit" class="btn btn-warning" data-toggle="modal">Tahrirlash</button></a></td>
+                            <td><a href="{{debt.id}}/delete"><button type="submit" class="btn btn-danger" data-toggle="modal">O'chirish</button></a></td>
+                        </tr>
+                    {% endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+    
+          <!-- Modal Header -->
+          <div class="modal-header bg-dark">
+            <h4 class="modal-title">Yangi nasiya</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+    
+          <!-- Modal body -->
+          <form  id="new-debt-form"  method="post">
+              {% csrf_token%}
+            <div class="modal-body">
+              <label for="new-product-name">Mijoz:</label>
+              <input type="text" name="customer" placeholder="Ismi, familiyasi, tel raqam..." id="new-customer" class="form-control" required>
+              <br>
+              <label for="new-product-name">Nasiya miqdori:</label>
+              <input type="text" name="debt" placeholder="Nasiya miqdori..." id="new-debt" class="form-control" required>
+              <br>
+              <label for="new-product-name">Mijoz tug'ulgan sana:</label>
+              <input type="date" name="customer_birth_date"  id="new-customer-birthdate" class="form-control" >
+              <br>
+              <label for="new-product-name">Savdo sanasi:</label>
+              <input type="date" name="date"   value="{{today|date:'Y-m-d'}}" id="new-debt-date" class="form-control" required>
+              <br>
+              <label for="new-product-name">Mahsulotlar:</label>
+              <input type="text" name="products" placeholder="Sotilgan mahsulotlar..." id="new-products" class="form-control" >
+              <br>
+            </div>
+    
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Qo`shish</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Yopish</button>
+        </div>
+      </form>
+    
+        </div>
+      </div>
+    </div>
+<!-- ./wrapper -->
+
+
+{% endblock %}
