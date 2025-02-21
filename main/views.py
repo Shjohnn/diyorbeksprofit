@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 from django.views import *
 from .models import *
 from datetime import datetime
-from user.models import *
+from django.contrib.auth.models import User
 
 
 class HomeView(TemplateView):
@@ -15,7 +15,10 @@ class ProductsView(View):
     def get(self, request):
         if request.user.is_authenticated:
             debts = Debt.objects.all()
+
             total_debt = f"{sum(debt.debt for debt in debts):,.1f} So'm".replace(",", ".")
+            for debt in debts:
+                debt.debt = f"{debt.debt:,.0f}".replace(",", ".")
             context = {
                 'debts': debts,
                 'today': datetime.today(),
@@ -26,18 +29,14 @@ class ProductsView(View):
     def post(self, request):
         if request.user.is_authenticated:
             Debt.objects.create(
-                customer = request.POST.get('customer'),
-                customer_birth_date = request.POST.get('customer_birth_date'),
-                date = request.POST.get('date'),
-                products = request.POST.get('products'),
-                debt = request.POST.get('debt'),
+                customer=request.POST.get('customer'),
+                customer_birth_date=request.POST.get('customer_birth_date'),
+                date=request.POST.get('date'),
+                products=request.POST.get('products'),
+                debt=request.POST.get('debt'),
             )
             return redirect('products')
         return redirect('login')
-
-    
-
-
 
 
 class DebtDeleteView(View):
@@ -55,6 +54,7 @@ class DebtDeleteView(View):
         debt.delete()
         return redirect('products')
 
+
 class DebtUpdateView(View):
     def get(self, request, pk):
         if request.user.is_authenticated:
@@ -67,14 +67,14 @@ class DebtUpdateView(View):
 
     def post(self, request, pk):
         if request.user.is_authenticated:
-            debt= Debt.objects.filter(pk=pk)
+            debt = Debt.objects.filter(pk=pk)
             if debt.exists():
                 debt.update(
-                    customer = request.POST.get('customer'),
-                    customer_birth_date = request.POST.get('customer_birth_date'),
-                    date = request.POST.get('date'),
-                    products = request.POST.get('products'),
-                    debt = request.POST.get('debt'),
+                    customer=request.POST.get('customer'),
+                    customer_birth_date=request.POST.get('customer_birth_date'),
+                    date=request.POST.get('date'),
+                    products=request.POST.get('products'),
+                    debt=request.POST.get('debt'),
                 )
                 return redirect('products')
             return redirect('login')
