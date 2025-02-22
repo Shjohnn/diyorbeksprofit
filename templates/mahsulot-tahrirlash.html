@@ -8,7 +8,9 @@
               <input type="text" name="customer" value="{{debt.customer}}" id="new-customer" class="form-control" required>
               <br>
               <label for="new-product-name">Nasiya miqdori:</label>
-              <input type="text" name="debt" value="{{debt.debt}}" id="new-debt" class="form-control" required>
+              <input type="text" name="debt" value="{{debt.debt}}" id="new-debt" class="form-control"
+                           required
+                           oninput="this.value = this.value.replace(/\D/g, '')">
               <br>
               <label for="new-product-name">Mijoz tug'ulgan sana:</label>
               <input type="date" name="customer_birth_date"  value="{{debt.customer_birth_date}}" id="new-customer-birthdate" class="form-control" >
