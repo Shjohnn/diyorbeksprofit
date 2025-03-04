@@ -13,10 +13,12 @@
                            oninput="this.value = this.value.replace(/\D/g, '')">
               <br>
               <label for="new-product-name">Mijoz tug'ulgan sana:</label>
-              <input type="date" name="customer_birth_date"  value="{{debt.customer_birth_date}}" id="new-customer-birthdate" class="form-control" >
+              <p>{{debt.customer_birth_date}}</p>
+<!--              <input type="date" name="customer_birth_date"  value="{{debt.customer_birth_date}}" id="new-customer-birthdate" class="form-control" >-->
               <br>
               <label for="new-product-name">Savdo sanasi:</label>
-              <input type="date" name="date"   value="{{debt.date}}" id="new-debt-date" class="form-control" required>
+              <p>{{debt.date}}</p>
+<!--              <input type="date" name="date"   value="{{debt.date}}" id="new-debt-date" class="form-control" required>-->
               <br>
               <label for="new-product-name">Mahsulotlar:</label>
               <input type="text" name="products" value="{{debt.products}}" id="new-products" class="form-control" >

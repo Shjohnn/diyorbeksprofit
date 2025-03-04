@@ -71,8 +71,10 @@ class DebtUpdateView(View):
             if debt.exists():
                 debt.update(
                     customer=request.POST.get('customer'),
-                    customer_birth_date=request.POST.get('customer_birth_date'),
-                    date=request.POST.get('date'),
+
+                    customer_birth_date=debt.first().customer_birth_date
+                ,
+                    date=debt.first().date,
                     products=request.POST.get('products'),
                     debt=request.POST.get('debt'),
                 )
